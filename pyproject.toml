@@ -16,6 +16,7 @@ classifiers = [
     "License :: OSI Approved :: Apache 3.0 License",
     "Operating System :: OS Independent",
 ]
+dependencies = ["requests"]
 
 [project.urls]
 "Homepage" = "https://github.com/dsx1123/ndclient"
