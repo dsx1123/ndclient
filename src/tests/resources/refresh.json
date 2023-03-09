@@ -1,0 +1,7 @@
+{
+    "jwttoken": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImJ3djJoaDRuYzAza2JvNnlkbXF4ejBuaGJsbWV1YTU0IiwidHlwIjoiSldUIn0.eyJhdnBhaXIiOiJzaGVsbDpkb21haW5zPWFsbC9hZG1pbi8iLCJjbHVzdGVyIjoiNmU2NDJkNjQtNjM2ZS02ZDJkLTc0NjUtNzI3MjYxNjY2ZjcyIiwiZXhwIjoxNjc4MzQ1Mjk2LCJpYXQiOjE2NzgzNDQwOTYsImlkIjoiNDhkMTA1YmRmYmM0OWE1ZmNmMzlhMTBiOTYxMzg2ZTYxZGZlNDAwODVjYjAzMTVkODE4Yjc2MWM1NzM1ZGFmYSIsImlzcyI6Im5kIiwiaXNzLWhvc3QiOiIxNzIuMjUuNzQuMTIzIiwicmJhYyI6W3siZG9tYWluIjoiYWxsIiwicm9sZXMiOltbImFkbWluIiwiV3JpdGVQcml2Il0sWyJhcHAtdXNlciIsIlJlYWRQcml2Il1dLCJyb2xlc1IiOjE2Nzc3MjE2LCJyb2xlc1ciOjF9XSwic2Vzc2lvbmlkIjoiUEpxdzdHOFVLQVFVOXU9c05OZzRKOURCIiwidXNlcmZsYWdzIjowLCJ1c2VyaWQiOjI1MDAyLCJ1c2VybmFtZSI6ImFkbWluIiwidXNlcnR5cGUiOiJsb2NhbCJ9.oJxLB8Bg2FLFROYXL7RjLc4t0wCpQCUmR19xuEtRVDN4LaqW41D4vCR7KKy709FoyhXqNmkHSCIOFp88YX-kwIB-UzXrJA8ZxbXxU6aUQpk1T41uxGudw1SGeWHkF1fgI2ljnW9yx-SlZVxwnE2Px7l70WMdbnd-Sh6oWJyf1jBilrHZxz43l_hY1__BUZuBr0gxFtH0lmwMtgyn6gIkm7p2Ox1PLpEfyCH5iEv4KuI5CEGZweac1FTw8rHTl_DNOTHP-qYxLJffe6jvVb8NDD9-rydt7rd0HMBYQr7UAQSgZMHhIhkd85AEfelyJqOgfYvlA_V-R0V6FqfOOImowQ",
+    "username": "admin",
+    "usertype": "local",
+    "rbac": "[{\"domain\":\"all\",\"roles\":[[\"admin\",\"WritePriv\"],[\"app-user\",\"ReadPriv\"]],\"rolesR\":16777216,\"rolesW\":1}]",
+    "statusCode": 200
+}

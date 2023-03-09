@@ -1,0 +1,10 @@
+{
+    "version": "12.1.2e",
+    "mode": "LAN",
+    "isMediaController": false,
+    "dev": false,
+    "isHaEnabled": false,
+    "install": "EASYFABRIC",
+    "uuid": "ac18e0e1-1dbb-4f46-a9d3-7074b706c05b",
+    "is_upgrade_inprogress": false
+}

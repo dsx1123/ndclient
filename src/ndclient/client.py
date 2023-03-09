@@ -25,6 +25,16 @@ class Response:
         self.data = None
         self.status_code = -1
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        if self.ok != other.ok or self.data != other.data or self.status_code != other.status_code:
+            return False
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
 
 class Client:
     def __init__(self, url: str, username: str, password: str, login_domain: str = "local", verify: bool = False):
@@ -50,7 +60,7 @@ class Client:
 
     @property
     def url(self):
-        return self._url
+        return self._base_url
 
     @property
     def session(self):
@@ -99,6 +109,9 @@ class Client:
                          method="post")
         return resp.ok
 
+    def _send(self, prep_req: requests.PreparedRequest) -> requests.Response:
+        return self.session.send(request=prep_req, verify=self._verify)
+
     def send(self, endpoint: str, method: str, data: dict = None, headers: dict = {}) -> Response:
         """
 
@@ -139,7 +152,7 @@ class Client:
                 refreshed = self.refresh()
                 if not refreshed:
                     self.login()
-            resp = self.session.send(request=prep_req, verify=self._verify)
+            resp = self._send(request=prep_req)
         except ConnectionError as e:
             raise e
 
