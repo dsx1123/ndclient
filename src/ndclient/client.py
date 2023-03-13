@@ -152,7 +152,7 @@ class Client:
                 refreshed = self.refresh()
                 if not refreshed:
                     self.login()
-            resp = self._send(request=prep_req)
+            resp = self._send(prep_req=prep_req)
         except ConnectionError as e:
             raise e
 
