@@ -137,7 +137,7 @@ class Client:
         rest_resp = Response()
         rest_headers = self._headers
         extra_headers = headers
-        if headers is None:
+        if headers == {}:
             extra_headers = {}  # normalize the headers
 
         rest_headers.update(extra_headers)
@@ -146,6 +146,42 @@ class Client:
                                url=rest_url,
                                headers=rest_headers,
                                data=json.dumps(data))
+        prep_req = self.session.prepare_request(req)
+        try:
+            if endpoint not in [URL.LOGIN, URL.REFRESH]:
+                refreshed = self.refresh()
+                if not refreshed:
+                    self.login()
+            resp = self._send(prep_req=prep_req)
+        except ConnectionError as e:
+            raise e
+
+        rest_resp.data = self.normalize_resp_data(resp)
+        rest_resp.status_code = resp.status_code
+        if resp.status_code not in [200, 201]:
+            rest_resp.ok = False
+        else:
+            rest_resp.ok = True
+        return rest_resp
+
+    def send_file(self, endpoint: str, data: dict) -> Response:
+        """
+        special function to upload file
+
+        Args:
+            endpoint: upload URL
+            data: dictionary with requested parameter, ex:
+                  url = "/appcenter/cisco/ndfc/api/v1/imagemanagement/imageupload/smart-image-upload"
+                  data = {
+                    file: open("nxos64-cs.10.2.4.M.bin", "rb")
+                  }
+                  send_file(url, data)
+        """
+        url = self._base_url + endpoint
+        rest_resp = Response()
+        req = requests.Request(method="POST",
+                               url=url,
+                               files=data)
         prep_req = self.session.prepare_request(req)
         try:
             if endpoint not in [URL.LOGIN, URL.REFRESH]:
