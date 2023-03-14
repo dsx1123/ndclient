@@ -108,7 +108,7 @@ def test_get_version(version_url, version_info, login_response, refresh_response
 
 
 @requests_mock.Mocker(kw="requests_mocker")
-def test_login(mocker, login_response, **kwargs):
+def test_login(login_response, **kwargs):
     kwargs["requests_mocker"].register_uri("POST", url + "/login", text=login_response)
     client = Client(url, username, password, login_domain, verify)
     login = client.login()
@@ -116,7 +116,7 @@ def test_login(mocker, login_response, **kwargs):
 
 
 @requests_mock.Mocker(kw="requests_mocker")
-def test_refresh(mocker, refresh_response, refresh_response_fail, **kwargs):
+def test_refresh(refresh_response, refresh_response_fail, **kwargs):
     kwargs["requests_mocker"].register_uri("POST", url + "/refresh", text=refresh_response)
 
     client = Client(url, username, password, login_domain, verify)
@@ -130,7 +130,7 @@ def test_refresh(mocker, refresh_response, refresh_response_fail, **kwargs):
 
 
 @requests_mock.Mocker(kw="requests_mocker")
-def test_file_upload(mocker, upload_url, image_file, upload_response, login_response, refresh_response_fail, **kwargs):
+def test_file_upload(upload_url, image_file, upload_response, login_response, refresh_response_fail, **kwargs):
     kwargs["requests_mocker"].register_uri("POST", url + upload_url, text=upload_response)
     kwargs["requests_mocker"].register_uri("POST", url + "/login", text=login_response)
     kwargs["requests_mocker"].register_uri("POST", url + "/refresh", text=refresh_response_fail, status_code=500)
