@@ -1,6 +1,5 @@
 import json
 import pytest
-import requests
 import requests_mock
 from ndclient import Client, Response
 
@@ -90,9 +89,13 @@ def test_send_negative():
 
 
 @requests_mock.Mocker(kw="requests_mocker")
-def test_get_version(version_url, version_info, login_response, refresh_response_fail, **kwargs):
+def test_get_version(
+    version_url, version_info, login_response, refresh_response_fail, **kwargs
+):
     kwargs["requests_mocker"].register_uri("GET", url + version_url, text=version_info)
-    kwargs["requests_mocker"].register_uri("POST", url + "/refresh", status_code=500, text=refresh_response_fail)
+    kwargs["requests_mocker"].register_uri(
+        "POST", url + "/refresh", status_code=500, text=refresh_response_fail
+    )
     kwargs["requests_mocker"].register_uri("POST", url + "/login", text=login_response)
     client = Client(url, username, password, login_domain, verify)
     login = client.login()
@@ -117,35 +120,46 @@ def test_login(login_response, **kwargs):
 
 @requests_mock.Mocker(kw="requests_mocker")
 def test_refresh(refresh_response, refresh_response_fail, **kwargs):
-    kwargs["requests_mocker"].register_uri("POST", url + "/refresh", text=refresh_response)
+    kwargs["requests_mocker"].register_uri(
+        "POST", url + "/refresh", text=refresh_response
+    )
 
     client = Client(url, username, password, login_domain, verify)
     refresh = client.refresh()
     assert refresh
 
-    kwargs["requests_mocker"].register_uri("POST", url + "/refresh", status_code=500, text=refresh_response_fail)
+    kwargs["requests_mocker"].register_uri(
+        "POST", url + "/refresh", status_code=500, text=refresh_response_fail
+    )
     client = Client(url, username, password, login_domain, verify)
     refresh = client.refresh()
     assert not refresh
 
 
 @requests_mock.Mocker(kw="requests_mocker")
-def test_file_upload(upload_url, image_file, upload_response, login_response, refresh_response_fail, **kwargs):
-    kwargs["requests_mocker"].register_uri("POST", url + upload_url, text=upload_response)
+def test_file_upload(
+    upload_url,
+    image_file,
+    upload_response,
+    login_response,
+    refresh_response_fail,
+    **kwargs,
+):
+    kwargs["requests_mocker"].register_uri(
+        "POST", url + upload_url, text=upload_response
+    )
     kwargs["requests_mocker"].register_uri("POST", url + "/login", text=login_response)
-    kwargs["requests_mocker"].register_uri("POST", url + "/refresh", text=refresh_response_fail, status_code=500)
+    kwargs["requests_mocker"].register_uri(
+        "POST", url + "/refresh", text=refresh_response_fail, status_code=500
+    )
 
-    data = {
-        "file": image_file
-    }
+    data = {"file": image_file}
 
     client = Client(url, username, password, login_domain, verify)
     r = client.send_file(upload_url, data)
     print(r.data)
     resp = Response()
     resp.ok = True
-    resp.data = {
-        "text": upload_response
-    }
+    resp.data = {"text": upload_response}
     resp.status_code = 200
     assert r == resp

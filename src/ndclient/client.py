@@ -2,6 +2,7 @@ import json
 import urllib3
 import requests
 from requests.exceptions import ConnectionError
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
@@ -20,6 +21,7 @@ class Response:
         status_code: REST API request response status code
 
     """
+
     def __init__(self):
         self.ok = True
         self.data = None
@@ -28,7 +30,11 @@ class Response:
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
-        if self.ok != other.ok or self.data != other.data or self.status_code != other.status_code:
+        if (
+            self.ok != other.ok
+            or self.data != other.data
+            or self.status_code != other.status_code
+        ):
             return False
         return True
 
@@ -37,7 +43,14 @@ class Response:
 
 
 class Client:
-    def __init__(self, url: str, username: str, password: str, login_domain: str = "local", verify: bool = False):
+    def __init__(
+        self,
+        url: str,
+        username: str,
+        password: str,
+        login_domain: str = "local",
+        verify: bool = False,
+    ):
         """
 
         Args:
@@ -54,9 +67,7 @@ class Client:
         self._login_domain = login_domain
         self._verify = verify
         self._session = requests.session()
-        self._headers = {
-            "Content-Type": "application/json"
-        }
+        self._headers = {"Content-Type": "application/json"}
 
     @property
     def url(self):
@@ -91,11 +102,9 @@ class Client:
         data = {
             "userName": self._username,
             "userPasswd": self._password,
-            "domain": self._login_domain
+            "domain": self._login_domain,
         }
-        resp = self.send(endpoint=URL.LOGIN,
-                         method="POST",
-                         data=data)
+        resp = self.send(endpoint=URL.LOGIN, method="POST", data=data)
         return resp.ok
 
     def refresh(self) -> bool:
@@ -105,14 +114,15 @@ class Client:
         Returns:
             bool: True if refresh success, False if faileed
         """
-        resp = self.send(endpoint=URL.REFRESH,
-                         method="post")
+        resp = self.send(endpoint=URL.REFRESH, method="post")
         return resp.ok
 
     def _send(self, prep_req: requests.PreparedRequest) -> requests.Response:
         return self.session.send(request=prep_req, verify=self._verify)
 
-    def send(self, endpoint: str, method: str, data: dict = None, headers: dict = {}) -> Response:
+    def send(
+        self, endpoint: str, method: str, data: dict = None, headers: dict = {}
+    ) -> Response:
         """
 
         Args:
@@ -128,7 +138,7 @@ class Client:
             ValueError: if any input is invalid
 
         """
-        if method.lower() not in ["get", "put", "post", 'delete']:
+        if method.lower() not in ["get", "put", "post", "delete"]:
             raise ValueError(f"Invalid method: {method}")
         if str(endpoint) == "" or not str(endpoint).startswith("/"):
             raise ValueError(f"Invalid API endpoint: {endpoint}")
@@ -142,10 +152,12 @@ class Client:
 
         rest_headers.update(extra_headers)
 
-        req = requests.Request(method=method.upper(),
-                               url=rest_url,
-                               headers=rest_headers,
-                               data=json.dumps(data))
+        req = requests.Request(
+            method=method.upper(),
+            url=rest_url,
+            headers=rest_headers,
+            data=json.dumps(data),
+        )
         prep_req = self.session.prepare_request(req)
         try:
             if endpoint not in [URL.LOGIN, URL.REFRESH]:
@@ -179,9 +191,7 @@ class Client:
         """
         url = self._base_url + endpoint
         rest_resp = Response()
-        req = requests.Request(method="POST",
-                               url=url,
-                               files=data)
+        req = requests.Request(method="POST", url=url, files=data)
         prep_req = self.session.prepare_request(req)
         try:
             if endpoint not in [URL.LOGIN, URL.REFRESH]:
